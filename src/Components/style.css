@@ -1,0 +1,22 @@
+.navbar a{
+    color:rgb(110 99 197);   
+}
+.end {
+    position: absolute;
+    right: 1rem;
+}
+.icons {
+    display: flex;
+}
+.icons i {
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    margin-right: 26vw;
+}
+i:hover {
+    cursor: pointer;
+}
+i:active {
+    border: 1px solid transparent;
+}
