@@ -32,8 +32,8 @@ router.post('/addphysical', fetchUser, [
 
         const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(400).json({ errors: errors.array() });
-
+            return res.status(400).json({ errors: errors.array().map((e)=> {return e.msg}) });
+            
         if ((await Physicals.find({ user: req.body.id })).length === 0) {
             const { height, weight } = req.body;
 
@@ -55,37 +55,40 @@ router.post('/addphysical', fetchUser, [
 
 //Update Health details of d concerned user: /api/notes/updatephysical
 // user's id is taken  
-router.put('/updatephysical/:id', fetchUser, async (req, res) => {
-    body('height', "Enter Height").isLength({ min: 1 }).isFloat({min:1}).withMessage("Height must be greater than or equal to 1"),
-    body('weight', "Enter Weight").isLength({ min: 1 })
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+router.put('/updatephysical/:id', [    
+    body('height', "Height must be greater than or equal to 1").isFloat({min:1}),
+    body('weight', "Weight must be greater than or equal to 1").isFloat({min:1})
+    ], fetchUser, 
+    async (req, res) => {
 
-    try {
-        const { height, weight } = req.body;
-        const updatePhysical = {}
-        if (height)
-            updatePhysical.height = height;
-        if (weight)
-            updatePhysical.weight = weight;
-        let sameUser = await Physicals.find({ user: req.params.id });
-        if (!sameUser[0])
-            return res.status(404).send("User doesnt exists");
-        if (sameUser[0].user.toString() !== req.body.id)
-            return res.status(401).send("invalid access");
-        sameUser = await Physicals.findByIdAndUpdate(sameUser[0]._id.toString(), { $set: updatePhysical, bmi: bmi(height.toString(), weight.toString()) }, 
-        { new: true })
-        res.json({ sameUser })
-    }
-    catch (error) {
-        console.log("Error updating User Details:", error);
-        res.status(500).send("Internal server error");
-    }
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(400).json({ errors: errors.array().map((e)=> {return e.msg}) });
+        try {
+            const { height, weight } = req.body;
+            const updatePhysical = {}
+            if (height)
+                updatePhysical.height = height;
+            if (weight)
+                updatePhysical.weight = weight;
+            let sameUser = await Physicals.find({ user: req.params.id });
+            if (!sameUser[0])
+                return res.status(404).send("User doesnt exists");
+            if (sameUser[0].user.toString() !== req.body.id)
+                return res.status(401).send("invalid access");
+            sameUser = await Physicals.findByIdAndUpdate(sameUser[0]._id.toString(), { $set: updatePhysical, bmi: bmi(height.toString(), weight.toString()) }, 
+            { new: true })
+            res.json({ sameUser })
+        }
+        catch (error) {
+            console.log("Error updating User Details:", error);
+            res.status(500).send("Internal server error");
+        }
 })
+
+
 // similar interests or similar bmi
 let userDetails=[];
-
 router.get('/users', fetchUser, async (req, res) => {
     try {
         const details = await Physicals.find({ bmi: req.body.bmi });

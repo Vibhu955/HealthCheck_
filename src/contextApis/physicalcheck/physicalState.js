@@ -60,17 +60,25 @@ const PhysicalState = (props) => {
       body: JSON.stringify({ height, weight })
     })).json();
     console.log(data)
-
-    let New = JSON.parse(JSON.stringify(details));
-    for (let i = 0; i <= New.length; i++) {
-      if (New[i].user === id) {
-        New[i].bmi = data.sameUser.bmi;
-        New[i].height = height;
-        New[i].weight = weight;
-        break;
+    if(!data.errors)
+    {
+      seterror(errors)
+      let New = JSON.parse(JSON.stringify(details));
+      for (let i = 0; i <= New.length; i++) {
+        if (New[i].user === id) {
+          New[i].bmi = data.sameUser.bmi;
+          New[i].height = height;
+          New[i].weight = weight;
+          break;
+        }
       }
+      setdetails(New);
     }
-    setdetails(New);
+    else
+    {
+    seterror(error.concat(data.errors))
+    // console.log(error)  
+  }    
   }
 
   return (

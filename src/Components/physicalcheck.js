@@ -39,8 +39,7 @@ function Physicalcheck() {
     }
 
     return (
-        // <form onSubmit={OnClick}>
-        <form>
+        <form onSubmit={OnClick}>
             {/* <div class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -70,8 +69,8 @@ function Physicalcheck() {
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", right: "10%" }} onClick={onClickEdit}>Edit Details</button>
-                <button type="submit" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", left: "10%" }} onClick={onClickDiabetes}>Check diabetes</button>
+                <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", right: "10%" }} onClick={onClickEdit}>Edit Details</button>
+                <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", left: "10%" }} onClick={onClickDiabetes}>Check diabetes</button>
 
             </> :
                 <>
@@ -79,13 +78,13 @@ function Physicalcheck() {
                     <div className='container' style={{ display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "15vh", border: "1px solid black", width: "50vw", height: "50vh" }}>
                         <div className="mb-3">
                             <label htmlFor="exampleFormControlInput1" className="form-label">Height</label >
-                            <input type="number" name="height" className="form-control" value={detail.height} id="exampleFormControlInput1" placeholder="in cm" onChange={onChange} min={1}/>
+                            <input type="number" name="height" className="form-control" value={detail.height} id="exampleFormControlInput1" placeholder="in cm" onChange={onChange} min={1} step={0.01}/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputPassword5" className="form-label">Weight</label>
-                            <input type="number" id="inputPassword5" name="weight" className="form-control" value={detail.weight} placeholder="in kgs" aria-describedby="passwordHelpBlock" onChange={onChange} min={1}/>
+                            <input type="number" id="inputPassword5" name="weight" className="form-control" value={detail.weight} placeholder="in kgs" aria-describedby="passwordHelpBlock" onChange={onChange} min={1} step={0.01}/>
                         </div>
-                        <button type="button" onClick={OnClick} style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", marginLeft: "20vw" }}>Submit</button>
+                        <button type="submit"  style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", marginLeft: "20vw" }}>Submit</button>
                     </div>
                 </>
             }
