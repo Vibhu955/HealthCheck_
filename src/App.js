@@ -7,7 +7,7 @@ import Login from './Components/Login';
 import Physicalcheck from './Components/physicalcheck';
 import Mentalcheck from './Components/mentalcheck';
 import Signup from './Components/Signup';
-import Diabetes from './Diabetes';
+import Diabetes from './Components/Diabetes';
 import {
   BrowserRouter as Router, Switch, Route,
 } from "react-router-dom";

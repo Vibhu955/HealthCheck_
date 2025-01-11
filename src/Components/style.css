@@ -20,3 +20,22 @@ i:hover {
 i:active {
     border: 1px solid transparent;
 }
+
+.toasting {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: #e9ecefb3;
+    height: 100%;
+    transform:scale3d(1.5, 1.5, 1.5);
+ }
+ .close {
+    visibility: hidden;
+ }
+ .mid{
+    position: absolute;
+    left: 34%;
+    top: 35%;
+    padding: 2rem;
+ }

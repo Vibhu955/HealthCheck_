@@ -7,10 +7,11 @@ const PhysicalState = (props) => {
   const alldetails = []
   const users = []
   const errors = []
-
+  const results = ""
   const [details, setdetails] = useState(alldetails);
   const [user, setuser] = useState(users);
   const [error, seterror] = useState(errors);
+  const [result, setResult] = useState(results);
 
 
   //ALL Details------------------
@@ -82,7 +83,7 @@ const PhysicalState = (props) => {
   }
 
   return (
-    <PhysicsContext.Provider value={{ details, user, Details, addphysical, error, editDetails, alldetails }}>
+    <PhysicsContext.Provider value={{ details, user, Details, addphysical, error, editDetails, alldetails, result, setResult }}>
       {props.children}
     </PhysicsContext.Provider>
   )

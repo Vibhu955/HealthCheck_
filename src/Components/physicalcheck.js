@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PhysicsContext from '../contextApis/physicalcheck/physicalContext'
 import { useHistory } from 'react-router-dom';
-// import Ml from './ML.py'
 
 function Physicalcheck() {
-    const { alldetails, details, Details, addphysical, error } = useContext(PhysicsContext);
+    const { alldetails, details, Details, addphysical, error,result,setResult } = useContext(PhysicsContext);
     const history = useHistory();
     const [detail, setdetail] = useState({ height: "", weight: "", bmi: "" });
 
@@ -14,16 +13,27 @@ function Physicalcheck() {
     }
     const onClickDiabetes=(e)=>{
         e.preventDefault();
+        setResult("");
         history.push('/physical/diabetes');
+
     }
+    useEffect(() => {
+        
+        if(result)
+        {
+            setResult(result)
+            console.log(result)
+        }
+
+        // console.log(result)
+
+    }, [result])
 
     // eslint-disable-next-line 
     const OnClick = ((e) => {
         e.preventDefault();
         addphysical(detail.height, detail.weight, detail.bmi);
-        setdetail({ height: " ", weight: " ", bmi: " " })
-
-        console.log(detail);
+        setdetail({ height: " ", weight: " ", bmi: " "})
 
     })
     useEffect(() => {
@@ -58,6 +68,7 @@ function Physicalcheck() {
                             <th scope="col">Height</th>
                             <th scope="col">Weight</th>
                             <th scope="col">BMI</th>
+                            <th scope='col'>Result</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,6 +77,8 @@ function Physicalcheck() {
                             <td>{details[0].height}</td>
                             <td> {details[0].weight}</td>
                             <td>{details[0].bmi}</td>
+                            <td>{result}</td>
+
                         </tr>
                     </tbody>
                 </table>
