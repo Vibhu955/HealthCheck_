@@ -17,6 +17,10 @@ const physicalSchema= new mongoose.Schema({
         type:Number,
         ref:'bmi'
     },
+    result:{
+        type: String,
+        ref:'result'
+    },
     date:{
         type: Date,
         default:Date.now

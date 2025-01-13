@@ -53,7 +53,7 @@ router.post('/addphysical', fetchUser, [
 )
 
 
-//Update Health details of d concerned user: /api/notes/updatephysical
+//Update Health details of d concerned user: /api/physical/updatephysical
 // user's id is taken  
 router.put('/updatephysical/:id', [    
     body('height', "Height must be greater than or equal to 1").isFloat({min:1}),
@@ -86,6 +86,24 @@ router.put('/updatephysical/:id', [
         }
 })
 
+//Add Dibetes result of d concerned user: /api/physical/diabetes
+router.post('/diabetes/:id', fetchUser, 
+    async (req, res) => {
+    try {  
+        const { result } = req.body;
+        let sameUser = await Physicals.find({ user: req.params.id });
+        if (!sameUser[0])
+            return res.status(404).send("User doesnt exists");
+        if (sameUser[0].user.toString() !== req.body.id)
+            return res.status(401).send("invalid access");
+        sameUser = await Physicals.findByIdAndUpdate(sameUser[0]._id.toString(), { $set: { result } }, { new: true })
+        res.json({ sameUser })
+}
+catch (error) {
+    console.log("Error updating User Details:", error);
+    res.status(500).send("Internal server error");
+}
+})
 
 // similar interests or similar bmi
 let userDetails=[];

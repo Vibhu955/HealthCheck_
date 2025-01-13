@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import PhysicsContext from "./physicalContext";
-
+import axios from "axios";
 const PhysicalState = (props) => {
 
-  const host = "http://localhost:3001";
   const alldetails = []
   const users = []
   const errors = []
@@ -13,11 +12,10 @@ const PhysicalState = (props) => {
   const [error, seterror] = useState(errors);
   const [result, setResult] = useState(results);
 
-
   //ALL Details------------------
   const Details = async () => {
     //APi
-    const data = await (await fetch(`${host}/api/physical/details`, {
+    const data = await (await fetch(`${process.env.REACT_APP_DATABASE_URL}/api/physical/details`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +30,7 @@ const PhysicalState = (props) => {
   //ADD Physical-------------------
   const addphysical = async (height, weight, bmi) => {
     //APi
-    const promise = await fetch(`${host}/api/physical/addphysical`, {
+    const promise = await fetch(`${process.env.REACT_APP_DATABASE_URL}/api/physical/addphysical`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +50,7 @@ const PhysicalState = (props) => {
   // editing details /api/physical/updatephysical/665aede0653309cbc7aa74e5
   const editDetails = async (id, height, weight) => {
     //API
-    const data = await (await fetch(`${host}/api/physical/updatephysical/${id}`, {
+    const data = await (await fetch(`${process.env.REACT_APP_DATABASE_URL}/api/physical/updatephysical/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -82,8 +80,41 @@ const PhysicalState = (props) => {
   }    
   }
 
+// editing details for diabetes /api/physical/diabetes/665aede0653309cbc7aa74e5
+  const updateDiabetes=(async (id,result)=>{
+
+    const response = (await axios.post(`${process.env.REACT_APP_DATABASE_URL}/api/physical/diabetes/${id}`
+    ,{result},
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "token": localStorage.getItem("token")
+        }
+    }))
+    setResult(response.data.result)
+    console.log(response)  
+    if(!response.errors)
+        {
+          seterror(errors)
+          let New = JSON.parse(JSON.stringify(details));
+          for (let i = 0; i <= New.length; i++) {
+            if (New[i].user === id) {
+              New[i].result = result;
+              break;
+            }
+          }
+          setdetails(New);
+        }
+        else
+        {
+        seterror(error.concat(response.errors))
+        console.log(error)  
+      }     
+})
+
   return (
-    <PhysicsContext.Provider value={{ details, user, Details, addphysical, error, editDetails, alldetails, result, setResult }}>
+    <PhysicsContext.Provider value={{ details, user, Details, addphysical, updateDiabetes ,error, editDetails, alldetails, result, setResult }}>
       {props.children}
     </PhysicsContext.Provider>
   )

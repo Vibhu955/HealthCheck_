@@ -49,7 +49,7 @@ function Login() {
         setOpen(true);
         setProgress(progress + 10);
         
-        const promise = await fetch(`http://localhost:3001/api/auth/${forgot}`, {
+        const promise = await fetch(`${process.env.REACT_APP_DATABASE_URL}/api/auth/${forgot}`, {
             method: `${post}`,
             headers: {
                 "Content-Type": "application/json",

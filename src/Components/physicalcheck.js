@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 function Physicalcheck() {
     const { alldetails, details, Details, addphysical, error,result,setResult } = useContext(PhysicsContext);
     const history = useHistory();
-    const [detail, setdetail] = useState({ height: "", weight: "", bmi: "" });
+    const [detail, setdetail] = useState({ height: "", weight: "", bmi: "" ,});
 
     const onClickEdit = (e) => {
         e.preventDefault();
@@ -17,16 +17,14 @@ function Physicalcheck() {
         history.push('/physical/diabetes');
 
     }
+    
     useEffect(() => {
-        
         if(result)
         {
             setResult(result)
             console.log(result)
         }
-
         // console.log(result)
-
     }, [result])
 
     // eslint-disable-next-line 
@@ -77,7 +75,7 @@ function Physicalcheck() {
                             <td>{details[0].height}</td>
                             <td> {details[0].weight}</td>
                             <td>{details[0].bmi}</td>
-                            <td>{result}</td>
+                            <td>{details[0].result}</td>
 
                         </tr>
                     </tbody>

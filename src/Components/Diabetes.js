@@ -8,16 +8,16 @@ import PhysicsContext from '../contextApis/physicalcheck/physicalContext';
 
 /* eslint-disable no-unused-vars */
 function Diabetes() {
-    const { result, setResult } = useContext(PhysicsContext);
+    const {details,  updateDiabetes, result, setResult } = useContext(PhysicsContext);
     const history = useHistory();
     const [data, setdata] = useState(({}))
     const [showA, setShowA] = useState(true);
-
     const [open, setOpen] = useState(false); //Toast
     const [userIp, setUserIp] = useState({ Gender: "", Age: "", HyperTension: "", Heart_Disease: "", Smoking_History: "", BMI: "", HbA1c_level: "", Blood_Glucose_level: "" });
 
-    async function fetchData() {
-        const response = (await axios.post('http://127.0.0.1:5000/prediction'
+
+    const fetchData= async()=>{
+        const response = (await axios.post(`${process.env.REACT_APP_BACKEND_URL}/prediction`
             , userIp,
             {
                 method: "POST",
@@ -25,10 +25,12 @@ function Diabetes() {
                     "Content-Type": "application/json"
                 }
             }))
-        setdata(response.data)
+        // setdata(response.data)
         setResult(response.data.result)
-        console.log(response)
+        // console.log(response.data.result)
+        return response.data.result;
     }
+   
     const toggleShowA = (() => {
         setShowA(!showA)
     });
@@ -43,8 +45,12 @@ function Diabetes() {
 
         }
         else {
-            fetchData();
-
+            let res=await fetchData();
+            setTimeout(() => {
+                console.log(res)
+                if(details[0].user)
+                    updateDiabetes(details[0].user,res);
+        }, 4000);
             //Toast
             setOpen(true);
             setTimeout(() => {
@@ -55,7 +61,7 @@ function Diabetes() {
                 setOpen(false);
                 history.push('/physical');
             }, 3000);
-            console.log(e.target)
+            // console.log(e.target)
         }
     }
     // const handleShowToast = () => {
