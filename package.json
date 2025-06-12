@@ -36,7 +36,8 @@
     "build": "react-scripts build --stats-children",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"npm run start\" \"nodemon Backendd/index.js\" \"python Backendpy/model2.py\" "
+    "dev": "concurrently \"npm run start\" \"nodemon Backendd/index.js\" \"python Backendpy/model2.py\" ",
+    "full": "concurrently \"npm run start\" \"nodemon Backendd/index.js\" \"python Backendpy/model2.py\" \"python Backendpy/qa.py\" "
   },
   "eslintConfig": {
     "extends": [
@@ -57,8 +58,10 @@
     ]
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@types/react-router-dom": "^5.3.3",
     "@types/three": "^0.165.0",
+    "tailwindcss": "^4.1.10",
     "vite": "^5.2.12"
   }
 }

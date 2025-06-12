@@ -11,6 +11,7 @@ cors= CORS(app, origins=[os.getenv('FRONTEND_HOST')]) #CORS object instantiation
 
 model= pickle.load(open('Backendpy/model2.pkl','rb'))
 scaler = pickle.load(open('Backendpy/scaler.pkl', 'rb'))  # Ensure you save and load the scaler correctly
+print("Diabetes Model Loaded")
 
 @app.route('/')
 def home():

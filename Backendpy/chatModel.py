@@ -21,6 +21,8 @@ embed_model = SentenceTransformer("Backendpy/hf_models/all-mpnet-base-v2")
 reranker = CrossEncoder("Backendpy/hf_models/ms-marco-MiniLM-L-6-v2", device=device)
 summarizer = pipeline("summarization", model="Backendpy/hf_models/distilbart-cnn-12-6", device=0 if torch.cuda.is_available() else -1)
 
+print("QA Model Loaded")
+
 # loading Embeddings and Index
 EMBED_PATH = "mpnet_embeddings.pt"
 INDEX_PATH = "faiss_index.index"
@@ -46,7 +48,7 @@ else:
 def hash_text(text: str) -> str:
     # print(hashlib.md5(text.encode()).hexdigest())
     return hashlib.md5(text.encode()).hexdigest()
-# regex to build URL
+# regex to build URL and name
 def build_psychologytoday_url(name: str) -> str:
     cleaned = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', name)
     cleaned = re.sub(r'[\d/]+', '', cleaned)
@@ -55,9 +57,18 @@ def build_psychologytoday_url(name: str) -> str:
     query = '+'.join(first_two)
     return f"https://www.psychologytoday.com/us/therapists?search={query}"
 
+def build_therapist_name(name: str) -> str:
+    cleaned = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', name)
+    cleaned = re.sub(r'[\d/]+', '', cleaned)
+    capitalized_words = re.findall(r'\b[A-Z][a-zA-Z\-]*\b', cleaned)
+    first_two = capitalized_words[:2] if capitalized_words else ["Therapist"]
+    query = ' '.join(first_two)
+    return query
+
 # final ans formatting
 def format_answer(idx, row, summary):
     therapist = row.therapistInfo.strip()
+    therapist_name = build_therapist_name(therapist)
     topic = row.topic.strip() if pd.notna(row.topic) else "Unknown"
     therapist_url = build_psychologytoday_url(therapist)
     views = int(row.views) if pd.notna(row.views) else 0
@@ -66,7 +77,7 @@ def format_answer(idx, row, summary):
 
     return {
         "index": idx + 1,
-        "therapist": therapist,
+        "therapist": therapist_name,
         "therapist_url": therapist_url,
         "topic": topic,
         "views": views,
@@ -99,6 +110,7 @@ def process_query(query: str):
     query_embedding = embed_model.encode([query], convert_to_tensor=True, normalize_embeddings=True)
     D, I = index.search(query_embedding.cpu().numpy(), k=50)
     filtered_indices = [i for i, score in zip(I[0], D[0]) if score >= 0.4]
+    print(f"len: {len(filtered_indices)}")
 
     if not filtered_indices:
         raise HTTPException(status_code=404, detail="No relevant answers found.")

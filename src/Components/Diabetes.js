@@ -111,7 +111,7 @@ function Diabetes() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="exampleFormControlInput6" className="form-label">BMI</label>
-                    <input type="number" className="form-control" id="exampleFormControlInput6" placeholder="Enter Calc BMI" name="BMI" value={userIp.BMI} step={0.01} onChange={onHandleChange} min={10} max={95.7} />
+                    <input type="number" className="form-control" id="exampleFormControlInput6" placeholder="Enter Calculated BMI" name="BMI" value={userIp.BMI} step={0.01} onChange={onHandleChange} min={10} max={95.7} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="exampleFormControlInput7" className="form-label">HbA1c_level</label>

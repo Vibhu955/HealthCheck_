@@ -1,67 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Answers from "./Answers";
 import axios from "axios";
-import Loading from "./loading.js"; // Import your top loading bar component
+import Loading from "./loading.js";
+import Summary from "./Summary.js";
 
 function Mentalcheck() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0); // For loading bar
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      interval = setInterval(() => {
+        setProgress((prev) => (prev < 90 ? prev + 5 : prev));
+      }, 200);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
-    // console.log("Submitting query:", query);
     setLoading(true);
-    setProgress(progress + 10); // Start loading
-
+    setProgress(10);
     try {
-      // const response = await axios.post(`${process.env.REACT_APP_BACKEND_CHAT_URL}/answers`, {
-      const response = await axios.post("http://127.0.0.1:8050/answers", {
-        query: query,
-      });
-      console.log(response);
-      setTimeout(() => {
-        setProgress(70);
-      }, 1000);
-
-      setResults(response.data);
-      setTimeout(() => {
-        setProgress(100);
-      }, 2000);
-      // setProgress(100); // Done
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_CHAT_URL}/answers`,
+        { query },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      const data = response.data;
+      setResults(data.results || []);
+      setSummary(data.final_summary || "");
+      setProgress(100);
     } catch (err) {
       console.error("Error:", err);
       alert("Something went wrong while contacting the backend.");
       setProgress(100);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 800);
     }
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      {/* Top loading bar */}
+    <div className="max-w-3xl mx-auto px-4 md:px-8 py-6 space-y-6">
       <Loading progress={progress} setProgress={setProgress} />
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 m-3">
+        Tell us about Your Concern!
+      </h2>
+      {/* Query Form */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 flex justify-center">
+        <form onSubmit={handleSubmit} className="w-full flex justify-center">
+          <div className="flex flex-col gap-4 items-center w-full">
+            <div className="form-floating">
+              <textarea className="form-control" placeholder="Ask a query here..." id="floatingTextarea" style={{ minHeight: "45vh", resize: "none", fontSize: "1rem",lineHeight:"1.4" ,padding: "2.5rem" }}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <textarea
-          className="p-4 border rounded-lg w-full h-32 resize-none"
-          placeholder="Describe your mental health concern..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : "Submit Query"}
-        </button>
-      </form>
+              </textarea>
+              <label for="floatingTextarea">Ask a query here...</label>
 
-      <Answers results={results} />
+              {/* className="w-1/2 min-h-[100rem] resize-none p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" */}
+            </div>
+            <button
+              style={{ color: "rgb(110, 99, 197)" }}
+              type="submit"
+              className="bg-blue-600 py-2 px-6 rounded-xl shadow hover:bg-blue-700 transition-all duration-200 disabled:opacity-50 m-5"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Submit Query"}
+            </button>
+          </div>
+        </form>
+      </div>
+      {/* Summary */}
+      {summary && <Summary summary={summary} />}
+      {/* Results */}
+            <Answers results={results} />
+
     </div>
   );
 }
