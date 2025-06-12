@@ -3,8 +3,10 @@ import Answers from "./Answers";
 import axios from "axios";
 import Loading from "./loading.js";
 import Summary from "./Summary.js";
+import { useHistory } from "react-router-dom";
 
 function Mentalcheck() {
+  const history = useHistory();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [summary, setSummary] = useState("");
@@ -12,11 +14,16 @@ function Mentalcheck() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (!localStorage.getItem("token"))
+      history.push("/login");
+  }, [])
+
+  useEffect(() => {
     let interval;
     if (loading) {
       interval = setInterval(() => {
-        setProgress((prev) => (prev < 90 ? prev + 5 : prev));
-      }, 200);
+        setProgress((prev) => (prev < 70 ? prev + 10 : prev));
+      }, 500);
     } else {
       clearInterval(interval);
     }
@@ -51,7 +58,7 @@ function Mentalcheck() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-8 py-6 space-y-6">
+    <div className="container">
       <Loading progress={progress} setProgress={setProgress} />
       <h2 className="text-2xl font-bold text-gray-800 mb-4 m-3">
         Tell us about Your Concern!
@@ -61,7 +68,7 @@ function Mentalcheck() {
         <form onSubmit={handleSubmit} className="w-full flex justify-center">
           <div className="flex flex-col gap-4 items-center w-full">
             <div className="form-floating">
-              <textarea className="form-control" placeholder="Ask a query here..." id="floatingTextarea" style={{ minHeight: "45vh", resize: "none", fontSize: "1rem",lineHeight:"1.4" ,padding: "2.5rem" }}
+              <textarea className="form-control" placeholder="Ask a query here..." id="floatingTextarea" style={{ minHeight: "35vh", resize: "none", fontSize: "1rem", lineHeight: "1.4", padding: "2.5rem" }}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}>
 
@@ -84,7 +91,7 @@ function Mentalcheck() {
       {/* Summary */}
       {summary && <Summary summary={summary} />}
       {/* Results */}
-            <Answers results={results} />
+      <Answers results={results} />
 
     </div>
   );

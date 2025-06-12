@@ -3,24 +3,23 @@ import PhysicsContext from '../contextApis/physicalcheck/physicalContext'
 import { useHistory } from 'react-router-dom';
 
 function Physicalcheck() {
-    const { alldetails, details, Details, addphysical, error,result,setResult } = useContext(PhysicsContext);
+    const { alldetails, details, Details, addphysical, error, result, setResult } = useContext(PhysicsContext);
     const history = useHistory();
-    const [detail, setdetail] = useState({ height: "", weight: "", bmi: "" ,});
+    const [detail, setdetail] = useState({ height: "", weight: "", bmi: "", });
 
     const onClickEdit = (e) => {
         e.preventDefault();
         history.push('/physical/updatephysical')
     }
-    const onClickDiabetes=(e)=>{
+    const onClickDiabetes = (e) => {
         e.preventDefault();
         setResult("");
         history.push('/physical/diabetes');
 
     }
-    
+
     useEffect(() => {
-        if(result)
-        {
+        if (result) {
             setResult(result)
             console.log(result)
         }
@@ -31,7 +30,7 @@ function Physicalcheck() {
     const OnClick = ((e) => {
         e.preventDefault();
         addphysical(detail.height, detail.weight, detail.bmi);
-        setdetail({ height: " ", weight: " ", bmi: " "})
+        setdetail({ height: " ", weight: " ", bmi: " " })
 
     })
     useEffect(() => {
@@ -47,60 +46,70 @@ function Physicalcheck() {
     }
 
     return (
-        <form onSubmit={OnClick}>
-            {/* <div class="d-flex justify-content-center">
+        <div className='container'>
+            <h1 className='m-3'>Lets Calculate BMI!</h1>
+
+            <form onSubmit={OnClick}>
+                {/* <div class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>   */
-            }
-            {details[0] ? <>
-                <h1 className='m-3'>Physical details!</h1>
-                {/* <Ml/> */}
-                {console.log(alldetails.concat(details[0]))}
+                }
+                {details[0] ? <>
+                    <h1 className='m-3'>Physical details!</h1>
+                    {/* <Ml/> */}
+                    {console.log(alldetails.concat(details[0]))}
 
-                <table className="my-5 container table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Sr.no.</th>
-                            <th scope="col">Height</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col">BMI</th>
-                            <th scope='col'>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>{details[0].height}</td>
-                            <td> {details[0].weight}</td>
-                            <td>{details[0].bmi}</td>
-                            <td>{details[0].result}</td>
+                    <table className="my-5 container table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.no.</th>
+                                <th scope="col">Height</th>
+                                <th scope="col">Weight</th>
+                                <th scope="col">BMI</th>
+                                <th scope='col'>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>{details[0].height}</td>
+                                <td> {details[0].weight}</td>
+                                <td>{details[0].bmi}</td>
+                                <td>{details[0].result}</td>
 
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", right: "10%" }} onClick={onClickEdit}>Edit Details</button>
-                <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", left: "10%" }} onClick={onClickDiabetes}>Check diabetes</button>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", right: "10%" }} onClick={onClickEdit}>Edit Details</button>
+                    <button type="button" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", position: "absolute", left: "10%" }} onClick={onClickDiabetes}>Check diabetes</button>
 
-            </> :
-                <>
-                    {error[0] ? <h4 className='m-2' style={{ position: "absolute", top: "10vh" }} >{error[0].msg}</h4> : ""}
-                    <div className='container' style={{ display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "15vh", border: "1px solid black", width: "50vw", height: "50vh" }}>
-                        <div className="mb-3">
-                            <label htmlFor="exampleFormControlInput1" className="form-label">Height</label >
-                            <input type="number" name="height" className="form-control" value={detail.height} id="exampleFormControlInput1" placeholder="in cm" onChange={onChange} min={1} step={0.01}/>
+                </> :
+                    <>
+                        {error[0] ? <h4 className='m-2' style={{ position: "absolute", top: "10vh" }} >{error[0].msg}</h4> : ""}
+                        <div className='container' style={{
+                            display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "14vh", border: "1px solid black", width: "50vw", height: "50vh",
+                            backgroundColor: "#fff",
+                            borderRadius: "12px",
+                            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.20)",
+                            border: "1px solid #eee",
+                        }}>
+                            <div className="mb-3">
+                                <label htmlFor="exampleFormControlInput1" className="form-label">Height</label >
+                                <input type="number" name="height" className="form-control" value={detail.height} id="exampleFormControlInput1" placeholder="in cm" onChange={onChange} min={1} step={0.01} />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="inputPassword5" className="form-label">Weight</label>
+                                <input type="number" id="inputPassword5" name="weight" className="form-control" value={detail.weight} placeholder="in kgs" aria-describedby="passwordHelpBlock" onChange={onChange} min={1} step={0.01} />
+                            </div>
+                            <button type="submit" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", marginLeft: "20vw" }}>Submit</button>
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="inputPassword5" className="form-label">Weight</label>
-                            <input type="number" id="inputPassword5" name="weight" className="form-control" value={detail.weight} placeholder="in kgs" aria-describedby="passwordHelpBlock" onChange={onChange} min={1} step={0.01}/>
-                        </div>
-                        <button type="submit"  style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", marginLeft: "20vw" }}>Submit</button>
-                    </div>
-                </>
-            }
+                    </>
+                }
 
-        </form>
+            </form>
+        </div >
     )
 }
 

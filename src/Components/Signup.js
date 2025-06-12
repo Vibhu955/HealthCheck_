@@ -111,6 +111,9 @@ function Signup() {
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: "rgb(255 255 255 / 96%)",
+                            borderRadius: "12px",
+                            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.20)",
+                            border: "1px solid #eee",
             }}>
                 <form onSubmit={onClick}>
                     <Loading setProgress={setProgress} progress={progress} />

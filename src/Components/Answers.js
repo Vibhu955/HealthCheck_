@@ -15,7 +15,7 @@ const Answers = ({ results }) => {
         <><h3 className="text-center text-muted fs-5 mt-3">Enter a Valid Querry.</h3>
           <h5 className="text-center fs-5 my-1 " style={{fontWeight:"lighter" }}>
             The query should contain your problems. </h5>
-          <p className="text-center fs-5 mt-5" style={{ color: "rgb(110, 99, 197)", fontWeight:"bold" }}>Your Happiness is appreciated, but cannot be evaluated here.</p>
+          <p className="text-center fs-5 mt-4" style={{ color: "rgb(110, 99, 197)", fontWeight:"bold" }}>Your Happiness is appreciated, but cannot be evaluated here.</p>
         </>
       ) : (
         results.map((res, idx) => (
