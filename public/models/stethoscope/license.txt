@@ -1,0 +1,11 @@
+Model Information:
+* title:	Doctor's stethoscope
+* source:	https://sketchfab.com/3d-models/doctors-stethoscope-3bef1be839834f4f9ad7ff8731d90602
+* author:	Vera4Art (https://sketchfab.com/Elvera.Viljoen)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Doctor's stethoscope" (https://sketchfab.com/3d-models/doctors-stethoscope-3bef1be839834f4f9ad7ff8731d90602) by Vera4Art (https://sketchfab.com/Elvera.Viljoen) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Scissors
+* source:	https://sketchfab.com/3d-models/scissors-6e0defc85edc4920a794fe9e82b5f16b
+* author:	sweedboy69 (https://sketchfab.com/sweedboy69)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Scissors" (https://sketchfab.com/3d-models/scissors-6e0defc85edc4920a794fe9e82b5f16b) by sweedboy69 (https://sketchfab.com/sweedboy69) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

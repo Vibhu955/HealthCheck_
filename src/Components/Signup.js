@@ -2,10 +2,14 @@ import React from 'react'
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Loading from './loading';
+import Background from './canvas/Background.js';
+import BackHome from './canvas/BackHome.js';
 
 function Signup() {
 
     const history = useHistory();
+        const [load, setload] = useState(true)
+    
     const [email, setemail] = useState("");
     const [open, setOpen] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -15,6 +19,15 @@ function Signup() {
     const [eye, seteye] = useState("fa-regular fa-eye");
     const [show, setshow] = useState("")
 
+    if (load) {
+
+        setTimeout(() => {
+            setProgress(progress + 30);
+        }, 1000)
+        setTimeout(() => {
+            setload(false)
+        }, 5000)
+    }
     const onIconClick = () => {
         if (eye === "fa-solid fa-eye-slash") {
             seteye("fa-regular fa-eye");
@@ -85,6 +98,9 @@ function Signup() {
           <hr />
         </>
       </Toast> */}
+       {load ? <div><Loading setProgress={setProgress} progress={progress} />
+                <Background /> </div> : <div>
+                <BackHome />
             <h5 className='msg' style={{ position: "absolute", left: "45vw", top: "10vh" }}>{show}</h5>
             <h1 className='mx-2 signup' style={{ position: "absolute", top: "10vh" }}>Signup here!</h1>
             <div className='form container' style={{
@@ -93,7 +109,8 @@ function Signup() {
                 width: "50vw",
                 height: "50vh",
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
+                backgroundColor: "rgb(255 255 255 / 96%)",
             }}>
                 <form onSubmit={onClick}>
                     <Loading setProgress={setProgress} progress={progress} />
@@ -111,6 +128,7 @@ function Signup() {
                     <button type="submit" className="btn btn-dark my-3" style={{ height: "7vh",  color: "rgb(110 99 197)",width: "10vw", position: "absolute", top: "65vh", left: "45vw" }}>SignUp</button>
                 </form>
             </div>
+            </div> }
         </div>
     )
 

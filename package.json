@@ -27,7 +27,7 @@
     "react-three-fiber": "^6.0.13",
     "react-toastify": "^11.0.2",
     "react-top-loading-bar": "^2.3.1",
-    "three": "^0.165.0",
+    "three": "^0.172.0",
     "use-cannon": "^0.5.3",
     "web-vitals": "^2.1.4"
   },

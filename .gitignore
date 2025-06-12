@@ -1,25 +1,51 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-node_modules
-/.pnp
+# === Dependencies ===
+node_modules/
+.pnp/
 .pnp.js
 
-# testing
-/coverage
+# === Testing ===
+coverage/
 
-# production
-/build
+# === Production builds ===
+build/
 
-# misc
-.DS_Store
+# === Virtual environments ===
+.venv/
+venv/
+
+# === Python cache ===
+Backendpy/__pycache__
+*.py[cod]
+*.egg-info/
+
+# === Environment files ===
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# === Log files ===
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.env
+# === Model and binary files ===
+*.pt
+*.bin
+*.index
+*.pkl
+*.h5
+*.npy
+*.onnx
+*.safetensors
+*.msgpack
+*.ot
+
+# === Directories to exclude ===
+Backendpy/hf_models/
+
+# === VS Code temp files ===
+.tempCodeRunnerFile.py

@@ -1,158 +1,121 @@
-// // Set up scene
-// import * as THREE from 'three';
-// import { useEffect, useRef } from "react";
-// import React from 'react';
-
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
-// function Background() {
-
-//     const refContainer = useRef(null);
-//     useEffect(() => {
-
-//     const scene = new THREE.Scene();
-//     scene.background = new THREE.Color(0.02, 0.02, 0.02)
-//     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-//     camera.position.z = 15;
-//     const renderer = new THREE.WebGLRenderer();
-//     renderer.setSize(window.innerWidth, window.innerHeight);
-//     document.body.appendChild(renderer.domElement);
-
-//     const controls = new OrbitControls(camera, renderer.domElement);
-
-//     const geometry = new THREE.ConeGeometry(6, 6, 32);
-//     const texture = new THREE.TextureLoader().load('https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg' ); 
-
-//     const material = new THREE.MeshBasicMaterial({color:"white", map:texture});
-//     // color:"rgb(110 ,99, 197)", map:texture,PointsMaterial,Points,size:0.1
-//     const cube = new THREE.Line(geometry, material);
-//     scene.add(cube)
-
-//     let q = 0;
-//     // Animation function
-//     const animate = () => {
-//         controls.update();
-//         //     cube.position.x = Math.sin(q += 0.01);
-//         //     // Rotate the cube
-//         //     cube.rotation.x += 0.01;
-//         //     cube.rotation.y += 0.01;
-//         //     cube.rotation.z += 0.01;
-//         renderer.render(scene, camera);
-
-//         requestAnimationFrame(animate);
-//     }
-//     animate();
-// },[loc])
-//     return (
-
-//         <div ref={refContainer}>{console.log("first")}</div>
-//     )
-// }
-
-// export default Background
-
-// import React, { useRef,useEffect } from 'react'
-// import * as THREE from 'three';
-// import { useLocation } from 'react-router-dom';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-// import * as CANNON from 'cannon-es'
-// const ThreeScene = () => {
-//     const canvasRef = useRef();
-
-//     useEffect(() => {
-//         const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
-//         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-//         const scene = new THREE.Scene();
-//         const orbit = new OrbitControls(camera, renderer.domElement);
-
-//         renderer.setSize(window.innerWidth, window.innerHeight);
-//         document.body.appendChild(renderer.domElement);
-
-//         camera.position.set(10, 30, -40);
-//         orbit.update();
-
-//         const groundGeo = new THREE.PlaneGeometry(30, 30);
-//         const groundMat = new THREE.MeshBasicMaterial({
-//             color: 0xffffff,
-//             side: THREE.DoubleSide,
-//             wireframe: true
-//         });
-//         const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-//         scene.add(groundMesh);
-
-//         const world = new CANNON.World({
-//             gravity: new CANNON.Vec3(0, -9.81, 0)
-//         });
-
-//         const timeStep = 1 / 60;
-
-//         function animate() {
-//             world.step(timeStep);
-//             renderer.render(scene, camera);
-//         }
-
-//         renderer.setAnimationLoop(animate);
-
-//         window.addEventListener('resize', function () {
-//             camera.aspect = window.innerWidth / window.innerHeight;
-//             camera.updateProjectionMatrix();
-//             renderer.setSize(window.innerWidth, window.innerHeight);
-//         });
-
-//         return () => {
-//             window.removeEventListener('resize', function () {
-//                 camera.aspect = window.innerWidth / window.innerHeight;
-//                 camera.updateProjectionMatrix();
-//                 renderer.setSize(window.innerWidth, window.innerHeight);
-//             });
-//         };
-//     }, []);
-
-//     return <canvas ref={canvasRef} />;
-// };
-
-// export default ThreeScene;
-import React from 'react'
-import { Canvas } from '@react-three/fiber'
-import { useFrame } from '@react-three/fiber'
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { sRGBEncoding } from '@react-three/drei/helpers/deprecated';
+import { World, Body, Box, Sphere, Vec3, Material, ContactMaterial } from 'cannon-es';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
-import { extend } from '@react-three/fiber';
-import { OrbitControls, TransformControls , BoxGeometry } from 'three'
-extend({BoxGeometry})
+const Background = () => {
+    const mountRef = useRef(null);
 
+    useEffect(() => {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        mountRef.current.appendChild(renderer.domElement);
 
+        const world = new World();
+        world.gravity.set(0, -9.82, 0);
 
-function MyRotatingBox() {
-    const myMesh = React.useRef();
-    extend({ BoxGeometry, THREE })
+        // Load GLTF models
+        const gltfLoader = new GLTFLoader();
+        const rgbeLoader = new RGBELoader();
+        renderer.outputEncoding = sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 4;
 
-    useFrame(({ clock }) => {
-        const a = clock.getElapsedTime();
-        myMesh.current.rotation.x = a;
-    });
-    return (
-        <mesh ref={myMesh}>
-            <BoxGeometry args={[2, 2, 2]} />
-            <meshBasicMaterial color="royalblue" />
-        </mesh>
-    );
-}
+        rgbeLoader.load('models/table/rogland_clear_night_4k.hdr', (texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.environment = texture;
 
+            const loadModel = (url) => {
+                return new Promise((resolve, reject) => {
+                    gltfLoader.load(url, resolve, undefined, reject);
+                });
+            };
 
-function Background() {
+            Promise.all([
+                loadModel('models/stethoscope/scene.gltf'),
+                loadModel('models/scissors/scene.gltf'),
+                loadModel('models/table/scene.gltf'),
+            ]).then(([stethoscopeGltf, scissorsGltf, tableGltf]) => {
+                // Create table
+                const tableMesh = tableGltf.scene;
+                tableMesh.scale.set(1, 1, 1);
+                tableMesh.position.set(0, -8.5, 0);
+                scene.add(tableMesh);
 
-    return (
-        <div id="canvas-container">
-            <Canvas >
-                <MyRotatingBox />
+                const tableBody = new Body({
+                    mass: 0,
+                    shape: new Box(new Vec3(1, 0.25, 5)),
+                    position: new Vec3(0, -5, 0)
+                });
+                world.addBody(tableBody);
 
-                <ambientLight intensity={0.1} />
-                <directionalLight color="red" position={[0, 0, 5]} />
+                // Create stethoscope
+                const stethoscopeMesh = stethoscopeGltf.scene;
+                stethoscopeMesh.scale.set(0.5, 0.5, 0.5);
+                scene.add(stethoscopeMesh);
 
-            </Canvas>
-        </div>
-    )
-}
+                const stethoscopeBody = new Body({
+                    mass: 2,
+                    shape: new Sphere(0.5),
+                    position: new Vec3(0.5, 7, 0) // Position the stethoscope above the table to ensure collision
+                });
+                world.addBody(stethoscopeBody);
+
+                // Create scissors
+                const scissorsMesh = scissorsGltf.scene;
+                scissorsMesh.scale.set(5, 5, 5);
+                scene.add(scissorsMesh);
+
+                const scissorsBody = new Body({
+                    mass: 1,
+                    shape: new Box(new Vec3(0.5, 0.5, 0.5)),
+                    position: new Vec3(-0.1, 5, 0),
+                    angularVelocity: new Vec3(-0.5, 0, 0.5), // Rotate the scissors
+                });
+                world.addBody(scissorsBody);
+
+                // Create contact material for better collision handling
+                const defaultMaterial = new Material('default');
+                const contactMaterial = new ContactMaterial(defaultMaterial, defaultMaterial, {
+                    friction: 0.4,
+                    restitution: 0.3,
+                });
+                world.addContactMaterial(contactMaterial);
+
+                camera.position.z = 15;
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+
+                    world.step(1 / 60);
+
+                    stethoscopeMesh.position.copy(stethoscopeBody.position);
+                    stethoscopeMesh.quaternion.copy(stethoscopeBody.quaternion);
+
+                    scissorsMesh.position.copy(scissorsBody.position);
+                    scissorsMesh.quaternion.copy(scissorsBody.quaternion);
+
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+            }).catch((err) => {
+                console.error('Error loading models', err);
+            });
+        });
+
+        return () => {
+            if (renderer.domElement && mountRef.current) {
+                mountRef.current.removeChild(renderer.domElement);
+            }
+        };
+    }, []);
+
+    return <div ref={mountRef} />;
+};
 
 export default Background;
