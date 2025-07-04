@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const dotenv = require("dotenv");
-dotenv.config({path:'C:/Users/Vibhu/React js/collab/Backendd/.env'});
+dotenv.config({path:'E:/Projects/collab/Backendd/.env'});
 
 const app = express()
 // const port = 3001
