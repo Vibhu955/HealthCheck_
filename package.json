@@ -15,6 +15,7 @@
     "concurrently": "^8.2.2",
     "dotenv": "^16.6.1",
     "flask": "^0.2.10",
+    "gh-pages": "^6.3.0",
     "jsonwebtoken": "^9.0.2",
     "node-venv": "^1.0.7",
     "numpy": "^0.0.1",
@@ -31,9 +32,12 @@
     "use-cannon": "^0.5.3",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://Vibhu955.github.io//HealthCheck_",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build --stats-children",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "concurrently \"npm run start\" \"nodemon Backendd/index.js\" \"python Backendpy/model2.py\" ",
