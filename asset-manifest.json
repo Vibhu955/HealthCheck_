@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "//HealthCheck_/static/css/main.e078e902.css",
+    "main.js": "//HealthCheck_/static/js/main.3b92b065.js",
+    "static/js/885.f0b2ed1f.chunk.js": "//HealthCheck_/static/js/885.f0b2ed1f.chunk.js",
+    "static/js/453.48146ef0.chunk.js": "//HealthCheck_/static/js/453.48146ef0.chunk.js",
+    "index.html": "//HealthCheck_/index.html",
+    "main.e078e902.css.map": "//HealthCheck_/static/css/main.e078e902.css.map",
+    "main.3b92b065.js.map": "//HealthCheck_/static/js/main.3b92b065.js.map",
+    "885.f0b2ed1f.chunk.js.map": "//HealthCheck_/static/js/885.f0b2ed1f.chunk.js.map",
+    "453.48146ef0.chunk.js.map": "//HealthCheck_/static/js/453.48146ef0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e078e902.css",
+    "static/js/main.3b92b065.js"
+  ]
+}
