@@ -31,7 +31,7 @@ function Login() {
     let loc = useLocation();
     useEffect(() => {
         // console.log(loc.pathname);
-        if (loc.pathname == "/forgotpassword") {
+        if (loc.pathname === "/forgotpassword") {
             setforgot("forgotpass");
             setPost("PUT");
         }
@@ -74,7 +74,7 @@ function Login() {
         //Toasts or MODALS
         if (data.success) {
             setlink(false)
-            if (forgot == "login")
+            if (forgot === "login")
                 setshow("Loggedin Successfully!!!")
             else
                 setshow("Password Reset Successfully")
@@ -87,7 +87,7 @@ function Login() {
             }, 2000);
             localStorage.setItem("token", data.token);
             setTimeout(() => {
-                if (forgot == "login")
+                if (forgot === "login")
                     history.push('/');
                 else
                     history.push('login');
@@ -134,7 +134,6 @@ function Login() {
                 </h5>
                 <h1 className='mx-2 login' style={{ position: "absolute", top: "10vh" }}>{forgot === "login" ? "Login here" : "Forgot Password"} !</h1>
                 <div className='form container' style={{
-                    border: "1px solid black",
                     marginTop: "19vh",
                     width: "50vw",
                     height: "50vh",

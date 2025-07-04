@@ -47,7 +47,8 @@ function Physicalcheck() {
 
     return (
         <div className='container'>
-            <h1 className='m-3'>Lets Calculate BMI!</h1>
+            {!details[0] ?
+                <h1 className='m-3'>Lets Calculate BMI!</h1> : ""}
 
             <form onSubmit={OnClick}>
                 {/* <div class="d-flex justify-content-center">
@@ -89,7 +90,7 @@ function Physicalcheck() {
                     <>
                         {error[0] ? <h4 className='m-2' style={{ position: "absolute", top: "10vh" }} >{error[0].msg}</h4> : ""}
                         <div className='container' style={{
-                            display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "14vh", border: "1px solid black", width: "50vw", height: "50vh",
+                            display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "14vh", width: "50vw", height: "50vh",
                             backgroundColor: "#fff",
                             borderRadius: "12px",
                             boxShadow: "0 8px 20px rgba(0, 0, 0, 0.20)",

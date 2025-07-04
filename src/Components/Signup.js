@@ -104,7 +104,6 @@ function Signup() {
             <h5 className='msg' style={{ position: "absolute", left: "45vw", top: "10vh" }}>{show}</h5>
             <h1 className='mx-2 signup' style={{ position: "absolute", top: "10vh" }}>Signup here!</h1>
             <div className='form container' style={{
-                border: "1px solid black",
                 marginTop: "19vh",
                 width: "50vw",
                 height: "50vh",

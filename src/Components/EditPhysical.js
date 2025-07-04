@@ -1,9 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import PhysicsContext from '../contextApis/physicalcheck/physicalContext'
 import { useHistory } from 'react-router-dom';
 
 function EditPhysical(props) {
-    const { alldetails, details, Details, addphysical, error, editDetails, user } = useContext(PhysicsContext);
+    // const { alldetails, details, Details, addphysical, error, editDetails, user } = useContext(PhysicsContext);
+    const { alldetails, details, error, editDetails } = useContext(PhysicsContext);
+
     const history = useHistory();
     // let { detail, setdetail } = props;
     const [detail, setdetail] = useState({ height: "", weight: "", bmi: "" });
@@ -36,10 +38,10 @@ function EditPhysical(props) {
         <div>
             <form onSubmit={OnClick}>
                 {error && error[0] ? <h4 className='m-2' style={{ position: "absolute", top: "10vh" }} >{error[0].msg}</h4> : ""}
-                {details && details[0] && detail ?
-
+                {details && details[0] && detail ? <>
+                    <h2 className='m-3'>Edit Physical Details!</h2>
                     < div className='container' style={{
-                        display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "15vh", border: "1px solid black", width: "50vw", height: "50vh",
+                        display: "flex", flexDirection: "column", justifyContent: "space-evenly", marginTop: "15vh", width: "50vw", height: "50vh",
                         backgroundColor: "#fff",
                         borderRadius: "12px",
                         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.20)",
@@ -54,7 +56,7 @@ function EditPhysical(props) {
                             <input type="number" id="inputPassword5" name="weight" className="form-control" value={detail.weight} placeholder="in kgs" aria-describedby="passwordHelpBlock" onChange={onChange} min={1} step={0.01} />
                         </div>
                         <button type="submit" style={{ height: "7vh", color: "rgb(110 99 197)", width: "10vw", marginLeft: "20vw" }}>Submit</button>
-                    </div> : ""
+                    </div></> : ""
                 }
 
             </form ></div >
