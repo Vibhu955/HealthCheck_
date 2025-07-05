@@ -11,7 +11,7 @@ cors = CORS(app, resources={
     r"/*": {
         "origins": [
             os.getenv('FRONTEND_HOST'),
-            "https://vibhu955.github.io"
+            "https://vibhu955.github.io/HealthCheck_"
         ],
         "supports_credentials": True
     }

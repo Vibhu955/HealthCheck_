@@ -9,7 +9,7 @@ import os
 from chatModel import process_query  # Ensure this has process_query()
 
 load_dotenv()
-FRONTEND_HOST = os.getenv("FRONTEND_HOST", "https://vibhu955.github.io") # Default "*" 
+FRONTEND_HOST = os.getenv("FRONTEND_HOST", "https://vibhu955.github.io/HealthCheck_") # Default "*" 
 
 # FastAPI App instantiation 
 app = FastAPI(
