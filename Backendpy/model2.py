@@ -7,7 +7,15 @@ import os
 load_dotenv()
 
 app = Flask(__name__) #Flask object instantiation
-cors= CORS(app, origins=[os.getenv('FRONTEND_HOST')]) #CORS object instantiation
+cors = CORS(app, resources={
+    r"/*": {
+        "origins": [
+            os.getenv('FRONTEND_HOST'),
+            "https://vibhu955.github.io"
+        ],
+        "supports_credentials": True
+    }
+})
 
 model= pickle.load(open('Backendpy/model2.pkl','rb'))
 scaler = pickle.load(open('Backendpy/scaler.pkl', 'rb'))  # Ensure you save and load the scaler correctly
