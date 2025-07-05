@@ -32,7 +32,7 @@
     "use-cannon": "^0.5.3",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://Vibhu955.github.io//HealthCheck_",
+  "homepage": "https://Vibhu955.github.io/HealthCheck_",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build --stats-children",

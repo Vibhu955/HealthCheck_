@@ -12,7 +12,7 @@ const Background = () => {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth , 600 );
+        renderer.setSize(window.innerWidth, 600);
         mountRef.current.appendChild(renderer.domElement);
 
         const world = new World();
@@ -25,7 +25,7 @@ const Background = () => {
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 4;
 
-        rgbeLoader.load('models/table/rogland_clear_night_4k.hdr', (texture) => {
+        rgbeLoader.load(`${process.env.PUBLIC_URL}/models/table/rogland_clear_night_4k.hdr`, (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.environment = texture;
 
@@ -36,9 +36,10 @@ const Background = () => {
             };
 
             Promise.all([
-                loadModel('models/stethoscope/scene.gltf'),
-                loadModel('models/scissors/scene.gltf'),
-                loadModel('models/table/scene.gltf'),
+                loadModel(`${process.env.PUBLIC_URL}/models/stethoscope/scene.gltf`),
+                loadModel(`${process.env.PUBLIC_URL}/models/scissors/scene.gltf`),
+                loadModel(`${process.env.PUBLIC_URL}/models/table/scene.gltf`),
+
             ]).then(([stethoscopeGltf, scissorsGltf, tableGltf]) => {
                 // Create table
                 const tableMesh = tableGltf.scene;
@@ -116,7 +117,7 @@ const Background = () => {
     }, []);
 
     // return <div ref={mountRef} style={{ width: "50vw", height: "100vh", marginBottom:"30vh"}} />;
-// ...existing code...
+    // ...existing code...
     return (
         <div
             style={{
