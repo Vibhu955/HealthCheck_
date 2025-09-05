@@ -18,7 +18,13 @@ cors = CORS(app, resources={
 })
 
 model= pickle.load(open('Backendpy/model2.pkl','rb'))
-scaler = pickle.load(open('Backendpy/scaler.pkl', 'rb'))  # Ensure you save and load the scaler correctly
+# # scaler = pickle.load(open('Backendpy/scaler.pkl', 'rb'))  # Ensure you save and load the scaler correctly
+encoders = pickle.load(open('Backendpy/encoders.pkl', 'rb'))
+
+le_gender = encoders["gender"]
+le_smoking = encoders["smoking_history"]
+
+    
 print("Diabetes Model Loaded")
 
 @app.route('/')
@@ -26,29 +32,37 @@ def home():
     return ('Helllo World!')
     # return render_template('index2.html')
 
-@app.route('/prediction',methods=['POST'])
+@app.route('/prediction', methods=['POST'])
 def Pred():
-    # prediction=model.predict([[1,28.0,0,0,4,27.32,5.7,158]])
-    data=request.get_json()
-    # print(data)
-    
+    data = request.get_json()
+
     required_features = ['Gender', 'Age', 'HyperTension', 'Heart_Disease', 'Smoking_History', 'BMI', 'HbA1c_level', 'Blood_Glucose_level']
     missing_features = [feature for feature in required_features if feature not in data]
     if missing_features:
         return jsonify({"error": f"Missing required features: {missing_features}"}), 400
-    # data=req_data.get(data['Gender'],...)
-    
-    input_array = np.array([data[feature] for feature in data]).reshape(1, -1)
-    input_std = scaler.transform(input_array)
-    # print(input_array)
-    prediction = model.predict(input_std)
 
-    # prediction=model.predict([[(value) for key,value in data.items()]])
-    print(prediction)
-    if(prediction[0]==0):
-        return jsonify({"result":'Non-Diabetic'}),200
-    else:
-        return jsonify({"result":'Diabetic'}),200
+    try:
+        # Convert to correct types
+        gender = int(data['Gender'])
+        age = float(data['Age'])
+        hypertension = int(data['HyperTension'])
+        heart_disease = int(data['Heart_Disease'])
+        smoking_history = int(data['Smoking_History'])
+        bmi = float(data['BMI'])
+        hba1c = float(data['HbA1c_level'])
+        glucose = float(data['Blood_Glucose_level'])
+
+        input_array = np.array([[gender, age, hypertension, heart_disease, smoking_history, bmi, hba1c, glucose]])
+
+        prediction = model.predict(input_array)
+
+        if(prediction[0]==0):
+            return jsonify({"result":'Non-Diabetic'}),200
+        else:
+            return jsonify({"result":'Diabetic'}),200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__=='__main__':
     app.run(debug=True)

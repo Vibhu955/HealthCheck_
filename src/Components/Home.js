@@ -1,5 +1,5 @@
 import React from 'react'
-import BackHome from './canvas/BackHome.js';
+// import BackHome from './canvas/BackHome.js';
 
 function Home() {
 
@@ -21,7 +21,7 @@ function Home() {
       </p>
       </div>      
 
-      <BackHome />
+      {/* <BackHome /> */}
     </div>
   )
 }
